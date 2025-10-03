@@ -1,4 +1,5 @@
 import numpy as np
+from .propagation import angular_spectrum_1D
 
 def pinhole_1D(x, width):
     """
@@ -48,4 +49,48 @@ def rectangular_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_ph
         return out
     else:
         return mask.astype(complex)
+
+
+def holographic_mask(E_source, E_target, dx, wavelength, z, phase_only=True):
+    """
+    Generate a 1D holographic mask that transforms a source into a target at distance z.
+
+    Parameters
+    ----------
+    E_source : ndarray (complex)
+        Source field at initial plane.
+    E_target : ndarray (complex)
+        Desired target field at reconstruction plane.
+    dx : float
+        Spatial sampling.
+    wavelength : float
+        Wavelength of light.
+    z : float
+        Distance from mask to target plane.
+    phase_only : bool
+        If True, return phase-only hologram.
+
+    Returns
+    -------
+    H : ndarray (complex)
+        Holographic mask to apply to source field.
+    """
+    
+    epsilon = 1e-12
+
+    # Backward propagate target to hologram plane
+    E_target_back = angular_spectrum_1D(E_target, dx, wavelength, -z)
+    
+    # Forward propagate source to hologram plane
+    E_source_forward = angular_spectrum_1D(E_source, dx, wavelength, z)
+    
+    # Compute hologram mask
+    H = E_target_back / (E_source_forward + epsilon)
+    
+    if phase_only:
+        H = np.exp(1j * np.angle(H))
+    else:
+        H /= np.max(np.abs(H))
+    
+    return H
 
