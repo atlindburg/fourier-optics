@@ -31,37 +31,17 @@ def double_slit_1D(x, slit_width, separation):
     aperture[np.abs(x - separation/2) < slit_width/2] = 1.0
     return aperture
 
-def square_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_phase=False):
+def rectangular_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_phase=False):
     """
-    1D square grating mask using sine construction.
-
-    Parameters
-    ----------
-    x : ndarray
-        Spatial coordinate grid (meters).
-    period : float
-        Grating period in meters.
-    duty_cycle : float, optional
-        Fraction of period that is "open" (default=0.5).
-        Implemented by thresholding sine wave.
-    phase_shift : float, optional
-        Phase shift applied to the "open" regions (radians).
-        Only relevant if binary_phase=True.
-    binary_phase : bool, optional
-        If False → binary amplitude grating (open=1, closed=0).
-        If True → binary phase grating (open=exp(i*phase_shift), closed=1).
-
-    Returns
-    -------
-    mask : ndarray (complex)
-        Complex transmission function of the grating.
+    1D rectangular grating mask with adjustable duty cycle.
     """
-    # sine-based square wave in [-1, 1]
-    sq_wave = np.sign(np.sin(2 * np.pi * x / period))
-
-    # convert to [0,1] mask with adjustable duty cycle
-    mask = (sq_wave > np.cos(np.pi * duty_cycle)).astype(float)
-
+    # position within each period, 0 <= t < 1
+    t = (x % period) / period
+    
+    # open where t < duty_cycle
+    mask = np.zeros_like(x, dtype=float)
+    mask[t < duty_cycle] = 1.0
+    
     if binary_phase:
         out = np.ones_like(x, dtype=complex)
         out[mask == 1] = np.exp(1j * phase_shift)
