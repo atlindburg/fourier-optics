@@ -1,6 +1,6 @@
 import numpy as np
 from .utils import fft2, ifft2, fft1, ifft1, energy
-from .grid import freqs, freqs_1D
+from .grid import freqs_2D, freqs_1D
 
 
 def fraunhofer_1D(u0, dx, wavelength, z):
@@ -84,8 +84,6 @@ def angular_spectrum_2D(u0, dx, wavelength, z):
     H = np.exp(1j * kz * z)
     U0 = fft2(u0)
     return ifft2(U0 * H)
-
-import numpy as np
 
 def z_step_1D(E0, x, propagator, wavelength, z_range, n_points=500):
     """
