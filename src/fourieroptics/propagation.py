@@ -37,9 +37,23 @@ def fraunhofer_1D(u0, dx, wavelength, z):
 
     return u1, out_dx
 
-def fresnel_tf_1D(u0, dx, wavelength, z):
+def fresnel_tf_1D(u0, dx, wavelength, z, aperture_size=None):
     """
     1D Fresnel propagation using transfer function method.
+
+    Parameters
+    ----------
+    u0 : ndarray
+        Input 1D field.
+    dx : float
+        Grid spacing (meters).
+    wavelength : float
+        Wavelength (meters).
+    z : float
+        Propagation distance (meters).
+    aperture_size : float, optional
+        Physical size of the aperture for Fresnel number check.
+        If provided, will raise ValueError if Fresnel number is too large.
     """
     FX = freqs_1D(u0.shape[0], dx)
     k = 2 * np.pi / wavelength
