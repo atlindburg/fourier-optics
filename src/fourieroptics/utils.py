@@ -1,9 +1,5 @@
 import numpy as np
 
-def freqs_1D(n, dx):
-    """Return frequency grid (cycles/m), fftshifted."""
-    return np.fft.fftshift(np.fft.fftfreq(n, d=dx))
-
 def fft1(u):
     return np.fft.fftshift(np.fft.fft(np.fft.ifftshift(u)))
 
