@@ -50,6 +50,30 @@ def rectangular_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_ph
     else:
         return mask.astype(complex)
 
+def sinusoidal_grating_1D(x, period, amplitude=1.0, phase=0.0, offset=0.0):
+    """
+    Generate a 1D sinusoidal grating.
+
+    Parameters
+    ----------
+    x : ndarray
+        1D spatial coordinate array (meters).
+    period : float
+        Grating period (meters).
+    amplitude : float, optional
+        Peak-to-peak amplitude of the grating (default=1.0).
+    phase : float, optional
+        Phase offset of the sine wave in radians (default=0.0).
+    offset : float, optional
+        Constant offset added to the grating (default=0.0).
+
+    Returns
+    -------
+    grating : ndarray
+        1D sinusoidal grating values (same shape as x).
+    """
+    grating = amplitude * np.sin(2 * np.pi * x / period + phase) + offset
+    return grating
 
 def holographic_mask(E_source, E_target, dx, wavelength, z, phase_only=True):
     """

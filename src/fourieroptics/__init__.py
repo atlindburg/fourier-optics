@@ -5,7 +5,7 @@ from .propagation import (
     fraunhofer_1D, fresnel_tf_1D, angular_spectrum_1D,
     z_step_1D
 )
-from .masks import pinhole_1D, double_slit_1D, rectangular_grating_1D, holographic_mask
+from .masks import pinhole_1D, double_slit_1D, rectangular_grating_1D,sinusoidal_grating_1D, holographic_mask
 from .sources import gaussian_beam_1D
 from .focusing import thin_lens_1D
 
