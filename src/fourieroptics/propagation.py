@@ -93,24 +93,3 @@ def z_step_1D(E0, x, propagator, wavelength, z_range, n_points=500):
         intensity_map[:, idx] /= np.max(intensity_map[:, idx])
 
     return intensity_map, z_steps
-
-# import os
-# from julia.api import Julia
-# jl = Julia(compiled_modules=False)
-
-# from julia import Main
-
-# # Absolute path to Julia file
-# jl_file = os.path.join(os.path.dirname(__file__), "propagation.jl")
-# Main.include(jl_file)
-
-# def z_step_1D_julia(E0, x, wavelength, z_range, n_points=500):
-#     """
-#     Compute z-step intensity map using Julia backend (Angular Spectrum Method).
-#     """
-#     dx = x[1] - x[0]
-#     z_steps = np.linspace(0, z_range, n_points).astype(np.float64)
-#     E0_julia = E0.astype(np.complex128)
-
-#     intensity_map = np.array(Main.z_steps_julia(E0_julia, float(dx), float(wavelength), z_steps))
-#     return intensity_map, z_steps
