@@ -118,3 +118,24 @@ def holographic_mask(E_source, E_target, dx, wavelength, z, phase_only=True):
     
     return H
 
+def blazed_grating_1D(x, period, blaze_depth=2*np.pi):
+    """
+    Generate a 1D blazed (sawtooth) phase grating.
+
+    Parameters
+    ----------
+    x : ndarray
+        1D spatial coordinate array (meters).
+    period : float
+        Grating period (meters).
+    blaze_depth : float
+        Maximum phase shift per period (default 2π, i.e., full blaze).
+
+    Returns
+    -------
+    grating : ndarray (complex)
+        Complex phase transmission function: exp(i * φ(x)).
+    """
+    phi = np.mod(blaze_depth * (x / period), blaze_depth)
+    grating = np.exp(1j * phi)
+    return np.angle(grating)
