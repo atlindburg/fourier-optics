@@ -8,7 +8,7 @@ from .propagation import (
 from .masks import (
     pinhole_1D, double_slit_1D,
     rectangular_grating_1D,sinusoidal_grating_1D, blazed_grating_1D,
-    holographic_mask
+    holographic_mask, sinusoidal_phase_grating_1D
 )
 from .sources import gaussian_beam_1D
 from .focusing import thin_lens_1D

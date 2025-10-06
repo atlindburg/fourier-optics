@@ -138,4 +138,32 @@ def blazed_grating_1D(x, period, blaze_depth=2*np.pi):
     """
     phi = np.mod(blaze_depth * (x / period), blaze_depth)
     grating = np.exp(1j * phi)
-    return np.angle(grating)
+    grating = np.angle(grating)
+    grating = grating / np.max(np.abs(grating))  # Normalize to [-1, 1]
+    return grating
+
+def sinusoidal_phase_grating_1D(x, period, phase_depth=np.pi, phase_offset=0.0):
+    """
+    Generate a 1D sinusoidal *phase* grating.
+
+    Parameters
+    ----------
+    x : ndarray
+        1D spatial coordinate array (meters).
+    period : float
+        Grating period (meters).
+    phase_depth : float, optional
+        Maximum phase modulation depth (radians), default is π.
+    phase_offset : float, optional
+        Constant phase offset (radians), default is 0.
+
+    Returns
+    -------
+    grating : ndarray (complex)
+        Complex transmission function representing the phase grating:
+        exp(i * phase_depth * sin(2πx / period + phase_offset))
+    """
+    spatial_phase = 2 * np.pi * x / period + phase_offset
+    grating = np.exp(1j * phase_depth * np.sin(spatial_phase))
+    grating = np.angle(grating)
+    return grating
