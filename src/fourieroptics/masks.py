@@ -165,5 +165,4 @@ def sinusoidal_phase_grating_1D(x, period, phase_depth=np.pi, phase_offset=0.0):
     """
     spatial_phase = 2 * np.pi * x / period + phase_offset
     grating = np.exp(1j * phase_depth * np.sin(spatial_phase))
-    grating = np.angle(grating)
     return grating
