@@ -32,7 +32,7 @@ def double_slit_1D(x, slit_width, separation):
     aperture[np.abs(x - separation/2) < slit_width/2] = 1.0
     return aperture
 
-def rectangular_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_phase=False):
+def rectangular_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_phase=False, amplitude=1.0):
     """
     1D rectangular grating mask with adjustable duty cycle.
     """
@@ -41,7 +41,7 @@ def rectangular_grating_1D(x, period, duty_cycle=0.5, phase_shift=0.0, binary_ph
     
     # open where t < duty_cycle
     mask = np.zeros_like(x, dtype=float)
-    mask[t < duty_cycle] = 1.0
+    mask[t < duty_cycle] = amplitude
     
     if binary_phase:
         out = np.ones_like(x, dtype=complex)
