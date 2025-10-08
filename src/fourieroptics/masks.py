@@ -21,6 +21,12 @@ def pinhole_1D(x, width):
     aperture[np.abs(x) < width/2] = 1.0
     return aperture
 
+def pinhole_2D(X, Y, diameter):
+    R = np.sqrt(X**2 + Y**2)
+    aperture = np.zeros_like(X, dtype=complex)
+    aperture[R < diameter/2] = 1.0
+    return aperture
+
 def double_slit_1D(x, slit_width, separation):
     """
     1D double-slit aperture field.

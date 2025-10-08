@@ -39,7 +39,7 @@ def angular_spectrum_1D(u0, dx, wavelength, z):
 
 def fresnel_tf_2D(u0, dx, wavelength, z):
     """Fresnel propagation using transfer function method."""
-    FX, FY = freqs(u0.shape, dx)
+    FX, FY = freqs_2D(u0.shape, dx)
     k = 2*np.pi / wavelength
     H = np.exp(1j * k * z) * np.exp(-1j*np.pi*wavelength*z*(FX**2 + FY**2))
     U0 = fft2(u0)
@@ -47,7 +47,7 @@ def fresnel_tf_2D(u0, dx, wavelength, z):
 
 def angular_spectrum_2D(u0, dx, wavelength, z):
     """Angular spectrum propagation."""
-    FX, FY = freqs(u0.shape, dx)
+    FX, FY = freqs_2D(u0.shape, dx)
     k = 2*np.pi / wavelength
     kz = np.sqrt((k**2 - (2*np.pi*FX)**2 - (2*np.pi*FY)**2).astype(complex))
     H = np.exp(1j * kz * z)
