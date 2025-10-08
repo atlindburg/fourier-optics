@@ -166,3 +166,35 @@ def sinusoidal_phase_grating_1D(x, period, phase_depth=np.pi, phase_offset=0.0):
     spatial_phase = 2 * np.pi * x / period + phase_offset
     grating = np.exp(1j * phase_depth * np.sin(spatial_phase))
     return grating
+
+def vls_grating_1D(x, g0, b2=0.0, b3=0.0, b4=0.0, threshold=0.5):
+    """
+    Generate a 1D Variable Line Spacing (VLS) grating mask.
+
+    Parameters
+    ----------
+    x : ndarray
+        1D spatial coordinate array (in meters).
+    g0 : float
+        Nominal groove density in lines per meter.
+    b2, b3, b4 : float
+        VLS polynomial coefficients (default 0). Units:
+            b2 [m^-1], b3 [m^-2], b4 [m^-3]
+    threshold : float, optional
+        Duty cycle threshold (default 0.5).
+
+    Returns
+    -------
+    grating : ndarray
+        1D binary array (0/1) representing the VLS grating pattern.
+    """
+    # Local groove density variation g(x)
+    g_of_x = g0 + 2*b2*x + 3*b3*x**2 + 4*b4*x**3
+
+    # Cumulative line number integral (discretized)
+    dx = x[1] - x[0]
+    line_numbers = np.cumsum(g_of_x) * dx
+
+    # Binary grating mask based on fractional line position
+    grating = np.where(np.mod(line_numbers, 1) < threshold, 1.0, 0.0)
+    return grating
